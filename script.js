@@ -398,3 +398,28 @@ function reset() {
 }
 
 initialize();
+
+document.getElementById("up").addEventListener("click", () => {
+  if (!KEY.ArrowDown) {
+    KEY.resetState();
+    KEY.ArrowUp = true;
+  }
+});
+document.getElementById("left").addEventListener("click", () => {
+  if (!KEY.ArrowRight) {
+    KEY.resetState();
+    KEY.ArrowLeft = true;
+  }
+});
+document.getElementById("down").addEventListener("click", () => {
+  if (!KEY.ArrowUp) {
+    KEY.resetState();
+    KEY.ArrowDown = true;
+  }
+});
+document.getElementById("right").addEventListener("click", () => {
+  if (!KEY.ArrowLeft) {
+    KEY.resetState();
+    KEY.ArrowRight = true;
+  }
+});
