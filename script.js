@@ -14,7 +14,7 @@ let snake,
   cellSize,
   isGameOver = false,
   tails = [],
-  score = 00,
+  score = 0,
   maxScore = window.localStorage.getItem("maxScore") || undefined,
   particles = [],
   splashingParticleCount = 20,
@@ -159,6 +159,50 @@ let KEY = {
     );
   }
 };
+
+// Handle swipe detection
+let touchStartX = 0;
+let touchStartY = 0;
+let touchEndX = 0;
+let touchEndY = 0;
+
+function handleGesture() {
+  let xDiff = touchStartX - touchEndX;
+  let yDiff = touchStartY - touchEndY;
+
+  if (Math.abs(xDiff) > Math.abs(yDiff)) {
+    if (xDiff > 0 && !KEY.ArrowRight) {
+      // Swipe left
+      KEY.resetState();
+      KEY.ArrowLeft = true;
+    } else if (xDiff < 0 && !KEY.ArrowLeft) {
+      // Swipe right
+      KEY.resetState();
+      KEY.ArrowRight = true;
+    }
+  } else {
+    if (yDiff > 0 && !KEY.ArrowDown) {
+      // Swipe up
+      KEY.resetState();
+      KEY.ArrowUp = true;
+    } else if (yDiff < 0 && !KEY.ArrowUp) {
+      // Swipe down
+      KEY.resetState();
+      KEY.ArrowDown = true;
+    }
+  }
+}
+
+document.addEventListener("touchstart", function (e) {
+  touchStartX = e.changedTouches[0].screenX;
+  touchStartY = e.changedTouches[0].screenY;
+});
+
+document.addEventListener("touchend", function (e) {
+  touchEndX = e.changedTouches[0].screenX;
+  touchEndY = e.changedTouches[0].screenY;
+  handleGesture();
+});
 
 class Snake {
   constructor(i, type) {
@@ -374,7 +418,7 @@ function gameOver() {
 
 function reset() {
   dom_score.innerText = "00";
-  score = "00";
+  score = 0;
   snake = new Snake();
   food.spawn();
   KEY.resetState();
